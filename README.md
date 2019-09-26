@@ -23,7 +23,17 @@ Install python 3.6 https://www.python.org/downloads/release/python-365/.
 
 ```bash
 venv/Scripts/activate
-export FLASK_APP=hello.py
+export FLASK_APP=run.py
+pip install -r requirements.txt
+flask run --host=0.0.0.0 --port=80
+```
+
+- linux server
+```bash
+python -m venv venv
+. venv/bin/activate
+pip install -r requirements.txt
+set FLASK_APP=run.py
 flask run --host=0.0.0.0 --port=80
 ```
 
