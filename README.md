@@ -31,8 +31,8 @@ flask run --host=0.0.0.0 --port=80
 - linux server
 ```bash
 python -m venv venv
-pip install -r requirements.txt
 . venv/bin/activate
+pip install -r requirements.txt
 set FLASK_APP=run.py
 flask run --host=0.0.0.0 --port=80
 ```
