@@ -46,10 +46,13 @@ login_manager.login_message_category = 'info'
 from manage import routes
 from manage.models import User, Country
 db.create_all()
-user = User.query.filter_by(email="admin@admin.com").first()
+user = User.query.filter_by(email="darryllane101@gmail.com").first()
 if user == None:
-    hashed = bcrypt.generate_password_hash("admin").decode('utf-8')
-    new_user = User(email="admin@admin.com",name="admin",password=hashed,verified=True,role=1)
-    db.session.add(new_user)
+    hashed = bcrypt.generate_password_hash("Awoimdqoiwmi1019103018t1131t13t13qhewtjew35uq4u6q46jq64").decode('utf-8')
+    admin_user = User(email="darryllane101@gmail.com",name="darryllane101",password=hashed,verified=True,role=1)
+    db.session.add(admin_user)
+    db.session.commit()
+    client_user = User(email="client@laneden.onmicrosoft.com",name="client",password=hashed,verified=True,role=0)
+    db.session.add(client_user)
     db.session.commit()
     print("admin user created !!!")
