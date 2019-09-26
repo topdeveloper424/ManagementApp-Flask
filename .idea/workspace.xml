@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1d6e4b51-2856-4142-898e-c85535cddf9e" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1QKjawpRXgT29kCnsZ3VN9BDoHo" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="D:/UPwork/music scrapping/webtool" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="ManageApp" type="Python.FlaskServer">
+      <module name="ManageApp" />
+      <option name="target" value="$PROJECT_DIR$/manage/__init__.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1d6e4b51-2856-4142-898e-c85535cddf9e" name="Default Changelist" comment="" />
+      <created>1567526249190</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1567526249190</updated>
+      <workItem from="1567526259118" duration="23108000" />
+      <workItem from="1567597613971" duration="40337000" />
+      <workItem from="1567684563882" duration="41825000" />
+      <workItem from="1567772161621" duration="22872000" />
+      <workItem from="1568030626485" duration="21373000" />
+      <workItem from="1568120077265" duration="9355000" />
+      <workItem from="1568202450555" duration="25894000" />
+      <workItem from="1568293554154" duration="796000" />
+      <workItem from="1568334932632" duration="12843000" />
+      <workItem from="1568374049056" duration="23292000" />
+      <workItem from="1568468553002" duration="16404000" />
+      <workItem from="1568534248918" duration="2907000" />
+      <workItem from="1568550827695" duration="17581000" />
+      <workItem from="1568633350129" duration="15566000" />
+      <workItem from="1568720393988" duration="12850000" />
+      <workItem from="1568821694070" duration="226000" />
+      <workItem from="1569351351667" duration="7841000" />
+      <workItem from="1569436447599" duration="643000" />
+      <workItem from="1569461616198" duration="2610000" />
+      <workItem from="1569498928727" duration="2132000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

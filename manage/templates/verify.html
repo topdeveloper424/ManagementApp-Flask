@@ -1,0 +1,42 @@
+
+{% extends "layout/auth.html" %}
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-danger" role="alert">
+	{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+	<form class="card" method="POST" action="">
+        {{ form.hidden_tag() }}
+		<div class="card-body p-6 ">
+			<div class="card-title text-center">Verification Code Required </div>
+			<div class="input-icon form-group wrap-input">
+				<span class="input-icon-addon search-icon">
+					<i class="zmdi zmdi-collection-item-6"></i>
+                </span>
+                
+                {{ form.verify_code(class="form-control", placeholder="Verification Code") }}
+                {% if form.verify_code.errors %}
+                {% for error in form.verify_code.errors %}
+                <div class="invalid-feedback">
+                    {{error}}
+                </div>
+                {% endfor %}
+
+                {% endif %}
+
+                <label class="form-label mt-2">
+					<a href="{{url_for('resend',username=username )}}" class="float-right small">Resend</a>
+				</label>
+            </div>
+			<div class="form-footer">
+				<button type="submit" class="btn btn-primary btn-block">Confirm</button>
+			</div>
+		</div>
+	</form>
+{% endblock %}

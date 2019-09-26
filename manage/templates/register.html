@@ -1,0 +1,56 @@
+﻿
+{% extends "layout/auth.html" %}
+{% block body %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form class="card authentication" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="card-body sign-up-page p-7">
+            <div class="card-title text-center">Create New Account</div>
+            <div class="input-icon form-group">
+                <span class="input-icon-addon search-icon">
+                    <i class="zmdi zmdi-email"></i>
+                </span>
+                {% if form.username.errors %}
+                {{ form.username(type="email", class="form-control", placeholder="Username") }}
+                <div class="invalid-feedback">
+                    {% for error in form.username.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    {{ form.username(type="email", class="form-control", placeholder="Username") }}
+                {% endif %}
+
+            </div>
+            <div class="input-icon form-group">
+                <span class="input-icon-addon search-icon">
+                    <i class="zmdi zmdi-lock"></i>
+                </span>
+                {{ form.password(class="form-control", placeholder="Password" ) }}
+            </div>
+            <div class="input-icon form-group">
+                <span class="input-icon-addon search-icon">
+                    <i class="zmdi zmdi-lock"></i>
+                </span>
+                {{ form.confirm_password(class="form-control", placeholder="Confirm Password" ) }}
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary btn-block">Create new account</button>
+            </div>
+            <div class="text-center text-muted mt-4">
+            Already have account? <a href="{{ url_for('login') }}">Sign in</a>
+        </div>
+        </div>
+        
+    </form>
+{% endblock %}

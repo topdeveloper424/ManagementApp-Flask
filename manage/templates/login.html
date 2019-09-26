@@ -1,0 +1,45 @@
+﻿
+{% extends "layout/auth.html" %}
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}" role="alert">
+	{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+	<form class="card" method="POST" action="">
+        {{ form.hidden_tag() }}
+		<div class="card-body p-6 ">
+			<div class="card-title text-center">Login to your Account</div>
+			<div class="input-icon form-group wrap-input">
+				<span class="input-icon-addon search-icon">
+					<i class="zmdi zmdi-email"></i>
+				</span>
+                {{ form.username(type="email",class="form-control", placeholder="Username") }}
+			</div>
+			<div class="input-icon form-group wrap-input">
+				<span class="input-icon-addon search-icon">
+					<i class="zmdi zmdi-lock"></i>
+				</span>
+                {{ form.password(class="form-control", placeholder="Password" ) }}
+                <label class="form-label">
+                    <a href="{{ url_for('forgot_password') }}" class="float-right small">I forgot password</a>
+                </label>
+			</div>
+			<div class="form-group mt-5">
+				<label class="custom-control custom-checkbox">
+					{{ form.remember(class="custom-control-input")}}
+					<span class="custom-control-label">Remember me</span>
+				</label>
+			</div>
+
+			<div class="form-footer mt-6">
+				<button type="submit" class="btn btn-primary btn-block">Sign in</button>
+			</div>
+		</div>
+	</form>
+{% endblock %}

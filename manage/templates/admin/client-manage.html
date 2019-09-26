@@ -1,0 +1,299 @@
+{% extends "layout/main.html" %}
+{% block body %}
+<div class="page-header">
+    <h4 class="page-title">Client Management</h4>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Client Management</li>
+    </ol>
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}" role="alert">
+	{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-lg-4">
+                        <div class="card-title">Client List</div>
+                    </div>
+                    <div class="col-lg-8">
+                        <button type="button" class="btn btn-pill btn-danger" style="float: right;" data-toggle="modal" data-target="#addModal"><i class="fe fe-plus mr-2"></i>Add Client</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="clientTable" class="table table-striped table-bordered border-top-0 border-bottom-0" style="width:100%">
+                            <thead>
+                                <tr class="border-bottom-0">
+                                    <th class="wd-5p">No</th>
+                                    <th class="wd-15p">Name</th>
+                                    <th class="wd-20p">Email</th>
+                                    <th class="wd-15p">Company</th>
+                                    <th class="wd-10p">Tel</th>
+                                    <th class="wd-5p">confirmed</th>
+                                    <th class="wd-25p">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for client in clients %}
+                                <tr class="border-top-0">
+                                    <td>{{loop.index}}</td>
+                                    <td>{{client.name}}</td>
+                                    <td>{{client.email}}</td>
+                                    <td>{{client.company}}</td>
+                                    <td>{{client.tel}}</td>
+                                    <td>{% if client.verified == 1 %} <span class="tag tag-green">YES</span> {% else %} <span class="tag tag-gray">NO</span> {% endif %}</td>
+                                    <td>
+                                        <button class="btn btn-pill btn-sm btn-danger" {% if client.verified == 0 %} disabled {% endif %} onclick="addService({{ client.id }})"><i class="fa fa-cab" data-toggle="tooltip" title="Add Service" data-original-title="fa fa-cab" aria-describedby="tooltip701494"></i></button>
+                                        <button class="btn btn-pill btn-sm btn-secondary" onclick="resendInvite({{ client.id }})"><i class="fa fa-rotate-right" data-toggle="tooltip" title="Resend"></i></button>
+                                        <button class="btn btn-pill btn-sm btn-warning" onclick="resetPassword({{ client.id }})"><i class="fa fa-refresh" data-toggle="tooltip" title="Reset Password"></i></button>
+                                        <button class="btn btn-pill btn-sm btn-primary" onclick="editClient({{ client.id }})"><i class="fa fa-edit" data-toggle="tooltip" title="Edit Client" data-original-title="fa fa-edit"></i></button>
+                                        <button class="btn btn-pill btn-sm btn-default" onclick="deleteClient({{ client.id }})"><i class="fa fa-trash" data-toggle="tooltip" title="Delete Client"></i></button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- table-wrapper -->
+            </div>
+            <!-- section-wrapper -->
+        </div>
+    </div>
+
+
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Client Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ url_for('add_client') }}" >
+                    <div class="modal-body">
+                            <fieldset class="form-group">
+                                <label for="addName">Name</label>
+                                <input class="form-control" type="text" name="name" id="addName" placeholder="Name" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label for="addEmail">Email</label>
+                                <input class="form-control" type="email" name="email" id="addEmail" placeholder="Email" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label for="addEmail">Company</label>
+                                <input class="form-control" type="text" name="company" id="addCompany" placeholder="Company">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label for="addTel">Tel</label>
+                                <input class="form-control" type="text" name="tel" id="addTel" placeholder="Telephone">
+                            </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Client Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ url_for('update_client') }}" >
+                    <div class="modal-body">
+                        <input type="hidden" id="curClient" name="cur_client">
+                            <fieldset class="form-group">
+                                <label for="editName">Name</label>
+                                <input class="form-control" type="text" name="name" id="editName" placeholder="Name" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label for="editEmail">Email</label>
+                                <input class="form-control" type="email" name="email" id="editEmail" placeholder="Email" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label for="editEmail">Company</label>
+                                <input class="form-control" type="text" name="company" id="editCompany" placeholder="Company">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label for="editTel">Tel</label>
+                                <input class="form-control" type="text" name="tel" id="editTel" placeholder="Telephone">
+                            </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="serviceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="curClientForService" name="cur_client">
+                <div class="row">
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label for="projectName">Project Name </label>
+                            <input class="form-control" type="text" name="project" id="projectName" placeholder="Project Name" required>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btn-group mt-5 mb-2">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                                Add Service <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for service in services %}
+                                    <li><a style="cursor: pointer" onclick="assignServices({{service.id}})">{{ service.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static',filename='plugins/datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static',filename='plugins/datatable/dataTables.bootstrap4.min.js') }}"></script>
+<script>
+$(function(e) {
+    $('#clientTable').DataTable();
+} );
+
+function addService(client_id) {
+    $("#curClientForService").val(client_id);
+    $("#projectName").val("");
+    $("#serviceModal").modal('show');
+}
+
+function assignServices(service_id) {
+    var client_id = $("#curClientForService").val();
+    var project = $("#projectName").val();
+    if (project.trim() == ""){
+        swal({
+        title: "Please enter project name !",
+        text: "alert",
+        type: "error",
+		});
+        return;
+    }
+    $.ajax({
+      type : 'POST',
+      url : "{{url_for('assign_service')}}",
+      data : {client_id:client_id,service_id:service_id,project:project},
+        success: function (response) {
+          location.reload(true);
+        }
+    });
+
+
+
+}
+
+function deleteClient(client_id) {
+    swal({
+        title: "Confirm",
+        text: "Are you sure for deleting this client ?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    },function () {
+        $.ajax({
+          type : 'POST',
+          url : "{{url_for('delete_client')}}",
+          data : {client_id:client_id},
+            success: function (response) {
+              location.reload(true);
+            }
+        });
+    });
+}
+
+function editClient(client_id) {
+    $("#curClient").val(client_id);
+      $("#editName").val("");
+      $("#editEmail").val("");
+      $("#editCompany").val("");
+      $("#editTel").val("");
+
+    $.ajax({
+      type : 'POST',
+      url : "{{url_for('detail_user')}}",
+      data : {client_id:client_id},
+        success: function (response) {
+          $("#editName").val(response.name);
+          $("#editEmail").val(response.email);
+          $("#editCompany").val(response.company);
+          $("#editTel").val(response.tel);
+          $("#editModal").modal('show');
+        }
+    });
+}
+
+function resendInvite(admin_id) {
+    $.ajax({
+      type : 'POST',
+      url : "{{url_for('resend_invite')}}",
+      data : {admin_id:admin_id},
+        success: function (response) {
+          swal('Congratulations!', 'Your invite has been succesfully sent', 'success');
+        }
+    });
+}
+
+function resetPassword(user_id) {
+
+    $.ajax({
+      type : 'POST',
+      url : "{{url_for('send_reset_password_email')}}",
+      data : {user_id:user_id},
+        success: function (response) {
+          swal('Congratulations!', 'request has been succesfully sent', 'success');
+        }
+    });
+}
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,148 @@
+﻿<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="msapplication-TileColor" content="#0061da">
+		<meta name="theme-color" content="#1643a3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+		<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+		<!-- Title -->
+		{% if title %}
+		<title>Management App - {{title}}</title>
+		{% else %}
+		<title>Management App</title>
+		{% endif %}
+	
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='fonts/fonts/font-awesome.min.css') }}">
+
+		<!-- Font family -->
+		<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+
+		<!-- Sidemenu Css -->
+		<link href="{{ url_for('static', filename='plugins/fullside-menu/css/style.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static', filename='plugins/fullside-menu/waves.min.css') }}" rel="stylesheet">
+
+		<!-- Dashboard Css -->
+		<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+
+		<link href="{{ url_for('static', filename='plugins/datatable/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='plugins/notify/css/jquery.growl.css') }}" rel="stylesheet">
+		<!-- Custom scroll bar css-->
+		<link href="{{ url_for('static', filename='plugins/scroll-bar/jquery.mCustomScrollbar.css') }}" rel="stylesheet">
+
+		<!---Font icons-->
+		<link href="{{ url_for('static', filename='css/icons.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='plugins/sweet-alert/sweetalert.css') }}" rel="stylesheet">
+
+	<style>
+		th,td{
+			text-align: center;
+		}
+	</style>
+	</head>
+	<body class="">
+		<div id="global-loader"></div>
+		<div class="page">
+			<div class="page-main">
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="{{ url_for('home') }}">
+								<img src="{{ url_for('static', filename='images/brand/logo.png') }}" class="header-brand-img" alt="adminor logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div class="d-flex order-lg-2 ml-auto header-right-icons header-search-icon">
+									<a href="{{ url_for('logout') }}" class="btn btn-sm btn-pill btn-outline-danger">Log out</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper">
+					<!-- Sidebar Holder -->
+					<nav id="sidebar" class="nav-sidebar" style="height: 85vh">
+						<ul class="list-unstyled components" id="accordion">
+							<div class="user-profile">
+								<div class="dropdown user-pro-body">
+									<div class="mb-2"><a href="#" class="" data-toggle="" aria-haspopup="true" aria-expanded="false"> <span class="font-weight-semibold">ADMIN PANEL</span>  </a>
+									</div>
+								</div>
+							</div>
+
+							<li>
+								<a href="{{url_for('home')}}" class=" wave-effect waves-effect waves-button"><i class="fa fa-desktop mr-2"></i> Dashboard</a>
+							</li>
+							<li>
+								<a href="{{url_for('client_management')}}" class=" wave-effect waves-effect waves-button"><i class="fa fa-users mr-2"></i> Client Management</a>
+							</li>
+							<li>
+								<a href="{{ url_for('service_management') }}" class=" wave-effect waves-effect waves-button"><i class="fa fa-automobile mr-2"></i> Service Management</a>
+							</li>
+							<li>
+								<a href="{{ url_for('admin_management') }}" class=" wave-effect waves-effect waves-button"><i class="fa fa-user-o mr-2"></i> Admin Management</a>
+							</li>
+							<li>
+								<a href="{{ url_for('history_page') }}" class=" wave-effect waves-effect waves-button"><i class="fa fa-th mr-2"></i> History</a>
+							</li>
+
+						</ul>
+					</nav>
+					<div class="content-area">
+						
+						{% block body %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Management App.  Designed by Top developers.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+		<!-- BAck to top -->
+		<a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+
+		<!-- Dashboard js -->
+		<script src="{{ url_for('static', filename='js/vendors/jquery-3.2.1.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendors/bootstrap.bundle.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendors/jquery.sparkline.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendors/selectize.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendors/jquery.tablesorter.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendors/circle-progress.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='plugins/rating/jquery.rating-stars.js') }}"></script>
+
+		<!-- Fullside-menu Js-->
+		<script src="{{ url_for('static', filename='plugins/fullside-menu/jquery.slimscroll.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='plugins/fullside-menu/waves.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='plugins/sweet-alert/sweetalert.min.js') }}"></script>
+		<!-- Custom scroll bar Js-->
+		<script src="{{ url_for('static', filename='plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+
+		{% block script %}
+		{% endblock %}
+		<!-- Custom Js-->
+		<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+	</body>
+</html>

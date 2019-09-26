@@ -1,0 +1,213 @@
+{% extends "layout/client.html" %}
+{% block body %}
+<div class="page-header">
+    <h4 class="page-title">Client Details</h4>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Client Details</li>
+    </ol>
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}" role="alert">
+	{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-lg-4">
+                        <div class="card-title">
+                            <h3 class="card-title">{{ client.company }}</h3>
+                            <input type="hidden" id="curClient" value="{{ client.id }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <button type="button" class="btn btn-pill btn-danger ml-2" style="float: right;" onclick="editDetail()"><i class="fa fa-edit mr-2"></i>Edit Details</button>
+                        <button type="button" class="btn btn-pill btn-success" style="float: right;" data-toggle="modal" data-target="#resetModal"><i class="fa fa-refresh mr-2"></i>Reset Password</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" value="{{ client.name }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address Line1</label>
+                        <input type="text" class="form-control" value="{{ client.address1 }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address Line2</label>
+                        <input type="text" class="form-control" value="{{ client.address2 }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">City/Town</label>
+                        <input type="text" class="form-control" value="{{ client.city }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">State/Province</label>
+                        <input type="text" class="form-control" {{ client.state }} readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Zip/Post Code</label>
+                        <input type="text" class="form-control" value="{{ client.zip }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Country</label>
+                        <input type="text" class="form-control" value="{{ country_name }}" readonly>
+
+                    </div>
+
+
+                </div>
+                <!-- table-wrapper -->
+            </div>
+            <!-- section-wrapper -->
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form method="post" action="{{ url_for('save_detail') }}">
+                <div class="modal-body">
+                    <input type="hidden" name="clientID" value="{{ client.id }}">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address Line1</label>
+                        <input type="text" class="form-control" name="address1" id="address1" placeholder="Address Line1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address Line2</label>
+                        <input type="text" class="form-control" name="address2" id="address2" placeholder="Address Line2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">City/Town</label>
+                        <input type="text" class="form-control" name="city" id="city" placeholder="City/Town">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">State/Province</label>
+                        <input type="text" class="form-control" name="state" id="state" placeholder="State/Province">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Zip/Post Code</label>
+                        <input type="text" class="form-control" name="zip" id="zipcode" placeholder="Zip/Post Code">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Country</label>
+                        <select class="form-control" name="country" id="country">
+                            {% for country in countries %}
+                            <option value="{{ country.id }}">{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form method="post" action="{{ url_for('change_password') }}">
+                <input type="hidden" name="clientID" value="{{ client.id }}">
+                <div class="modal-body">
+                        <fieldset class="form-group">
+                            <label for="addName">Current Password</label>
+                            <input class="form-control" type="password" name="curPassword" id="curPassword" placeholder="current password" required>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label for="addName">New Password</label>
+                            <input class="form-control" type="password" name="newPassword" id="newPassword" placeholder="New Password" required>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label for="addName">Confirm Password</label>
+                            <input class="form-control" type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm password" required>
+                        </fieldset>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static',filename='plugins/datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static',filename='plugins/datatable/dataTables.bootstrap4.min.js') }}"></script>
+<script>
+$(function(e) {
+    $('#clientTable').DataTable();
+} );
+
+function editDetail() {
+    $("#fullName").val("");
+    $("#address1").val("");
+    $("#address2").val("");
+    $("#city").val("");
+    $("#state").val("");
+    $("#zipcode").val("");
+    $("#country").val("");
+
+    var clientID = $("#curClient").val();
+
+    $.ajax({
+      type : 'POST',
+      url : "{{url_for('detail_user')}}",
+      data : {client_id:clientID},
+        success: function (response) {
+          console.log(response);
+            $("#fullName").val(response.name);
+            $("#address1").val(response.address1);
+            $("#address2").val(response.address2);
+            $("#city").val(response.city);
+            $("#state").val(response.state);
+            $("#zipcode").val(response.zip);
+            $("#country").val(response.country);
+
+        }
+    });
+    $("#editModal").modal("show");
+
+}
+
+
+</script>
+{% endblock %}

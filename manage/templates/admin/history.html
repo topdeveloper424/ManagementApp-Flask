@@ -1,0 +1,154 @@
+{% extends "layout/main.html" %}
+{% block body %}
+<div class="page-header">
+    <h4 class="page-title">History</h4>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">History</li>
+    </ol>
+</div>
+
+<div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-lg-4">
+                        <div class="card-title">
+                            <h3 class="card-title">History Datatable</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <button class="btn btn-danger" style="float: right" onclick="exportTable()">Export</button>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table id="clientTable" class="table table-striped table-bordered border-top-0 border-bottom-0" style="width:100%">
+                            <thead>
+                                <tr class="border-bottom-0">
+                                    <th class="wd-15p">Assessment type</th>
+                                    <th class="wd-15p">Company Name</th>
+                                    <th class="wd-15p">Name</th>
+                                    <th class="wd-15p">Scope</th>
+                                    <th class="wd-15p">Quote</th>
+                                    <th class="wd-15p">Assessment Date</th>
+                                    <th class="wd-15p">Authorisation Form</th>
+                                    <th class="wd-15p">Purchase Order</th>
+                                    <th class="wd-15p">Invoicer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    {% for service in user %}
+                                        <tr class="border-top-0">
+                                            <td>{{ service['user_service'] }}</td>
+                                            <td>{{service['company']}}</td>
+                                            <td>{{service['project']}}</td>
+                                            {% for item in service['items'] %}
+                                                {% if item.finished == 1 %}
+                                                    {% if item.function == 0 %}
+                                                        {% set download_file = item.filename %}
+                                                        <td><a style="cursor: pointer;text-decoration: underline" onclick="downloadFile('{{ download_file }}')">{{ item.finished_time}}</a></td>
+                                                    {% elif item.function == 1 %}
+                                                        <td>{{ item.date }}</td>
+                                                    {% elif item.function == 2 %}
+                                                        <td>{{ item.finished_time}}</td>
+                                                    {% endif %}
+                                                {% else %}
+                                                <td>incomplete</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% for i in range(0,6-service['items']|length) %}
+                                            <td>None</td>
+                                        {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- table-wrapper -->
+            </div>
+            <!-- section-wrapper -->
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static',filename='plugins/datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static',filename='plugins/datatable/dataTables.bootstrap4.min.js') }}"></script>
+    <script>
+
+$(function(e) {
+    $('#clientTable').DataTable();
+} );
+
+    function downloadFile(filename) {
+        if(filename != 'null' && filename != 'None' && filename != ''){
+            var download_path = ["{{ url_for('download_file',filename='') }}", filename].join("");
+            document.location.href = download_path;
+        }else{
+            swal({
+			title: "There is no file!",
+			text: "alert",
+			type: "error",
+		});
+
+        }
+    }
+
+function download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // We have to create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Make sure that the link is not displayed
+    downloadLink.style.display = "none";
+
+    // Add the link to your DOM
+    document.body.appendChild(downloadLink);
+
+    // Lanzamos
+    downloadLink.click();
+}
+
+function export_table_to_csv(html, filename) {
+	var csv = [];
+	var rows = document.querySelectorAll("table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+		var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++)
+            row.push(cols[j].innerText);
+
+		csv.push(row.join(","));
+	}
+
+    // Download CSV
+    download_csv(csv.join("\n"), filename);
+}
+
+function exportTable() {
+    var html = document.getElementById("clientTable").outerHTML;
+	export_table_to_csv(html, "history.csv");
+}
+
+
+    </script>
+{% endblock %}

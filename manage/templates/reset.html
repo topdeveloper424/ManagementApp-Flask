@@ -1,0 +1,37 @@
+
+{% extends "layout/auth.html" %}
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-danger" role="alert">
+	{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+	<form class="card" method="POST" action="{{ url_for('reset_password',user_id=user_id,token=token) }}">
+    <input type="hidden" name="user_id" value="{{ user_id }}">
+		<div class="card-body p-6 ">
+			<div class="card-title text-center">Reset Password </div>
+            <div class="input-icon form-group wrap-input">
+                <span class="input-icon-addon search-icon">
+                    <i class="zmdi zmdi-lock"></i>
+                </span>
+                <input type="password" class="form-control mb-0" name="newPassword" placeholder="New Password">
+            </div>
+            <div class="input-icon form-group wrap-input">
+                <span class="input-icon-addon search-icon">
+                    <i class="zmdi zmdi-lock"></i>
+                </span>
+                <input type="password" class="form-control mb-0" name="confirmPassword" placeholder="Confirm Password">
+            </div>
+
+
+			<div class="form-footer">
+				<button type="submit" class="btn btn-primary btn-block">Reset</button>
+			</div>
+		</div>
+	</form>
+{% endblock %}

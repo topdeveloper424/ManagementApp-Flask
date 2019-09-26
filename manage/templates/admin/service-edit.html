@@ -1,0 +1,494 @@
+{% extends "layout/main.html" %}
+{% block body %}
+<style>
+    .service-item-com {
+        padding: 1px 1px;
+        background-color: green;
+        color: white
+    }
+
+    .service-item-incom {
+        padding: 1px 1px;
+        background-color: orange;
+        color: white
+    }
+    .select-number{
+        font-size: 18px;
+        font-weight:bold;
+    }
+</style>
+
+<div class="page-header">
+    <h4 class="page-title">Service Management</h4>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Service Management</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header row">
+                        <h3 class="card-title">{{service.name}}</h3>
+                </div>
+
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="tag tag-red">Pre Assessment (Admin)</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-pill btn-secondary" style="float: right" onclick="addItem(0)">Add</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="list-group mt-1">
+                                    {% if admin_items %}
+                                        {% for item in admin_items %}
+                                            {% if item.item_type == 1 %}
+                                                <li class="list-group-item service-item-com">
+                                                    {% if item.matched_item != 0 %}
+                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                        <span class="tag tag-gray-dark">{{ item.id }}+{{ item.matched_item }}</span>&nbsp;
+                                                    {% endif %}
+                                                    &nbsp;
+                                                    {{item.id}}.&nbsp;
+                                                    {{ item.name }}
+                                                    <button class="btn btn-sm btn-primary" style="float: right" onclick="selectPreAdminItem({{item.id}})">select</button>
+                                                    <button class="btn btn-sm btn-default" style="float: right" onclick="editPreAdminItem({{item.id}})">edit</button>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="justify-content: center; display:flex">
+                            <span class="select-number" id="preAdminSelect"></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-danger" onclick="preJoin()">Join</button>
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-default" onclick="preUnJoin()">unjo</button>
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="select-number" id="preClientSelect"></span>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="tag tag-red">Pre Assessment (Client)</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-pill btn-secondary" style="float: right" onclick="addItem(1)">Add</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="list-group mt-1">
+                                    {% if client_items %}
+                                        {% for item in client_items %}
+                                            {% if item.item_type == 1 %}
+                                                <li class="list-group-item service-item-com">
+                                                    {% if item.matched_item != 0 %}
+                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                        <span class="tag tag-gray-dark">{{ item.matched_item }}+{{ item.id }}</span>&nbsp;
+                                                    {% endif %}
+                                                    {{item.id}}.&nbsp;
+                                                    {{ item.name }}
+                                                    <button class="btn btn-sm btn-primary" style="float: right" onclick="selectPreClientItem({{item.id}})">select</button>
+                                                    <button class="btn btn-sm btn-default" style="float: right" onclick="editPreClientItem({{item.id}})">edit</button>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="row">
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="tag tag-info">Post Assessment (Admin)</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-pill btn-secondary" style="float: right" onclick="addItem(2)">Add</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="list-group mt-1">
+                                        {% if admin_items %}
+                                        {% for item in admin_items %}
+                                            {% if item.item_type == 0 %}
+                                                <li class="list-group-item service-item-com">
+                                                    {% if item.matched_item != 0 %}
+                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                        <span class="tag tag-gray-dark">{{ item.id }}+{{ item.matched_item }}</span>&nbsp;
+                                                    {% endif %}
+                                                    &nbsp;
+                                                    {{item.id}}.&nbsp;
+                                                    {{ item.name }}
+                                                    <button class="btn btn-sm btn-primary" style="float: right" onclick="selectPostAdminItem({{item.id}})">select</button>
+                                                    <button class="btn btn-sm btn-default" style="float: right" onclick="editPostAdminItem({{item.id}})">edit</button>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% endif %}
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="justify-content: center; display:flex">
+                                <span class="select-number" id="postAdminSelect"></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-danger" onclick="postJoin()">Join</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-default" onclick="postUnJoin()">unjo</button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span class="select-number" id="postClientSelect"></span>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="tag tag-info">Post Assessment (Client)</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-pill btn-secondary" style="float: right" onclick="addItem(3)">Add</button>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="list-group mt-1">
+                                        {% if client_items %}
+                                        {% for item in client_items %}
+                                            {% if item.item_type == 0 %}
+                                                <li class="list-group-item service-item-com">
+                                                    {% if item.matched_item != 0 %}
+                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                        <span class="tag tag-gray-dark">{{ item.matched_item }}+{{ item.id }}</span>&nbsp;
+                                                    {% endif %}
+                                                    &nbsp;
+                                                    {{item.id}}.&nbsp;
+                                                    {{ item.name }}
+                                                    <button class="btn btn-sm btn-primary" style="float: right" onclick="selectPostClientItem({{item.id}})">select</button>
+                                                    <button class="btn btn-sm btn-default" style="float: right" onclick="editPostClientItem({{item.id}})">edit</button>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% endif %}
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    
+                </div>
+            </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="{{ url_for('add_item') }}" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="mode" id="addMode">
+                    <input type="hidden" value="{{service.id}}" id="curService" name="cur_service">
+                    <fieldset class="form-group">
+                            <label for="addName">Name</label>
+                            <input class="form-control" type="text" name="name" id="addName" placeholder="Name" required>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label for="addDescription">Type</label>
+                            <select class="form-control" name="type" id="addType" required>
+                                <option value="0">Upload|Download</option>
+                                <option value="1">Date Picker</option>
+                                <option value="2">Check Box</option>
+                            </select>
+                        </fieldset>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="{{ url_for('edit_item') }}" method="POST" id="editForm">
+                <div class="modal-body">
+                    <input type="hidden" value="{{service.id}}" name="cur_service">
+                    <input type="hidden" name="item_id" id="editItemID">
+                    <input type="hidden" name="mode" id="editMode">
+                    <input type="hidden" name="item_mode" id="itemMode">
+                    <fieldset class="form-group">
+                            <label for="editName">Name</label>
+                            <input class="form-control" type="text" name="name" id="editName" placeholder="Name" required>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label for="editType">Type</label>
+                            <select class="form-control" name="type" id="editType" required>
+                                <option value="0">Upload|Download</option>
+                                <option value="1">Date Picker</option>
+                                <option value="2">Check Box</option>
+                            </select>
+                        </fieldset>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="editItem(0)">Save changes</button>
+                    <button type="button" class="btn btn-default" onclick="editItem(1)">Delete</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    function addItem(mode){
+        $("#addMode").val(mode);
+        $("#addName").val("");
+        $("#addType").val("");
+
+        $("#addModal").modal('show');
+    }
+
+    function selectPreAdminItem(itemID){
+        $("#preAdminSelect").html(itemID);
+    }
+    function selectPreClientItem(itemID){
+        $("#preClientSelect").html(itemID);
+    }
+
+    function selectPostAdminItem(itemID){
+        $("#postAdminSelect").html(itemID);
+    }
+
+    function selectPostClientItem(itemID){
+        $("#postClientSelect").html(itemID);
+    }
+
+    function editItem(mode) {
+        $("#editMode").val(mode);
+        $("#editForm").submit();
+    }
+
+    function editPreAdminItem(itemID) {
+        $("#editName").val("");
+        $("#editType").val("");
+        $("#editItemID").val(itemID);
+        $("#itemMode").val(0);
+        $.ajax({
+          type : 'POST',
+          url : "{{url_for('detail_item')}}",
+          data : {mode:0,item_id:itemID},
+            success: function (response) {
+              console.log(response);
+                $("#editName").val(response.name);
+                $("#editType").val(response.function);
+                $("#editModal").modal('show');
+
+            }
+        });
+    }
+
+    function editPreClientItem(itemID) {
+        $("#editName").val("");
+        $("#editType").val("");
+        $("#editItemID").val(itemID);
+        $("#itemMode").val(1);
+        $.ajax({
+          type : 'POST',
+          url : "{{url_for('detail_item')}}",
+          data : {mode:1,item_id:itemID},
+            success: function (response) {
+              console.log(response);
+                $("#editName").val(response.name);
+                $("#editType").val(response.function);
+                $("#editModal").modal('show');
+
+            }
+        });
+
+    }
+
+    function editPostAdminItem(itemID) {
+        $("#editName").val("");
+        $("#editType").val("");
+        $("#editItemID").val(itemID);
+        $("#itemMode").val(0);
+        $.ajax({
+          type : 'POST',
+          url : "{{url_for('detail_item')}}",
+          data : {mode:0,item_id:itemID},
+            success: function (response) {
+              console.log(response);
+                $("#editName").val(response.name);
+                $("#editType").val(response.function);
+                $("#editModal").modal('show');
+
+            }
+        });
+
+    }
+
+    function editPostClientItem(itemID) {
+        $("#editName").val("");
+        $("#editType").val("");
+        $("#editItemID").val(itemID);
+        $("#itemMode").val(1);
+        $.ajax({
+          type : 'POST',
+          url : "{{url_for('detail_item')}}",
+          data : {mode:1,item_id:itemID},
+            success: function (response) {
+              console.log(response);
+                $("#editName").val(response.name);
+                $("#editType").val(response.function);
+                $("#editModal").modal('show');
+
+            }
+        });
+
+
+    }
+
+    function preJoin() {
+        var admin_id = $("#preAdminSelect").html();
+        var client_id = $("#preClientSelect").html();
+        admin_id = admin_id.trim();
+        client_id = client_id.trim();
+        if (admin_id != '' && client_id != ''){
+            $.ajax({
+              type : 'POST',
+              url : "{{url_for('join_item')}}",
+              data : {admin_id:admin_id,client_id:client_id},
+                success: function (response) {
+                  location.reload(true);
+                }
+            });
+        }else{
+            swal({
+			title: "Please select admin and client items !",
+			text: "alert",
+			type: "error",
+		});
+        }
+    }
+
+    function preUnJoin() {
+        var admin_id = $("#preAdminSelect").html();
+        var client_id = $("#preClientSelect").html();
+        admin_id = admin_id.trim();
+        client_id = client_id.trim();
+        if (admin_id != '' && client_id != ''){
+            $.ajax({
+              type : 'POST',
+              url : "{{url_for('unjoin_item')}}",
+              data : {admin_id:admin_id,client_id:client_id},
+                success: function (response) {
+                  location.reload(true);
+                }
+            });
+        }else{
+            swal({
+			title: "Please select admin and client items !",
+			text: "alert",
+			type: "error",
+		});
+        }
+    }
+    
+    function postJoin() {
+        var admin_id = $("#postAdminSelect").html();
+        var client_id = $("#postClientSelect").html();
+        admin_id = admin_id.trim();
+        client_id = client_id.trim();
+        if (admin_id != '' && client_id != ''){
+            $.ajax({
+              type : 'POST',
+              url : "{{url_for('join_item')}}",
+              data : {admin_id:admin_id,client_id:client_id},
+                success: function (response) {
+                  location.reload(true);
+                }
+            });
+        }else{
+            swal({
+			title: "Please select admin and client items !",
+			text: "alert",
+			type: "error",
+		});
+        }
+    }
+
+    function postUnJoin() {
+        var admin_id = $("#postAdminSelect").html();
+        var client_id = $("#postClientSelect").html();
+        admin_id = admin_id.trim();
+        client_id = client_id.trim();
+        if (admin_id != '' && client_id != ''){
+            $.ajax({
+              type : 'POST',
+              url : "{{url_for('unjoin_item')}}",
+              data : {admin_id:admin_id,client_id:client_id},
+                success: function (response) {
+                  location.reload(true);
+                }
+            });
+        }else{
+            swal({
+			title: "Please select admin and client items !",
+			text: "alert",
+			type: "error",
+		});
+        }
+    }
+
+</script>
+
+{% endblock %}
